@@ -1,6 +1,7 @@
 const express = require('express'); //imports express
 const bodyParser = require('body-parser');
 const path = require('path'); //imports path
+const da = require("./data-access"); //imports data-access.js
 
 const app = express(); //creates an express app object
 const port = process.env.PORT || 4000;  // use env var or default to 4000
@@ -16,3 +17,9 @@ app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
   console.log("staticDir: " + staticDir);
 });
+
+//getCustomers
+app.get("/customers", async (req, res) => {
+    const cust = await da.getCustomers();
+    res.send(cust);
+    });
