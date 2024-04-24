@@ -77,6 +77,7 @@ module.exports.addCustomer = async function (newCustomer) {
   try {
     const insertResult = await collection.insertOne(newCustomer);
     // return array [status, id, errMessage]
+    console.log(new Date().toLocaleString() + " addCustomer");
     return ["success", insertResult.insertedId, null];
   } catch (err) {
     console.log(err.message);
@@ -84,4 +85,19 @@ module.exports.addCustomer = async function (newCustomer) {
   }
 };
 
+// get Customer By Id
+module.exports.getCustomerById = async function (id) {
+    try {
+      const customer = await collection.findOne({"id": +id});
+      console.log(new Date().toLocaleString() + " getCustomerById");
+      if(!customer){
+        return [null, "Invalid Customer Number </br> Customer not found (404)!"];  
+      }
+      return [customer, null];
+    } catch (err) {
+      console.log(err.message);
+      return [null, err.message];
+    }
+  };
+  
 dbConnect();
