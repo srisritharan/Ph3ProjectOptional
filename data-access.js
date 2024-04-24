@@ -14,7 +14,7 @@ async function dbConnect() {
         const client = new MongoClient(connectString);
         await client.connect();
         collection = client.db(dbName).collection(collectionName);
-        console.log(`DB Connected ${connectString} Collection ${collectionName}`);
+        console.log(new Date().toLocaleString() +` DB Connected ${connectString} Collection ${collectionName}`);
     }catch(err){
         console.log(err.message);
         console.log("DB CONNECTION FAILED. Is database running?");
@@ -24,7 +24,8 @@ async function dbConnect() {
 module.exports.getCustomers = async function() {
     try {
         const customers = await collection.find().toArray();
-        console.log("getCustomers");
+        console.log(new Date().toLocaleString() + " getCustomers");
+        // throw {"message":"an error occured"};
         return [customers, null];
     } catch (err) {
         console.log(err.message);

@@ -21,5 +21,10 @@ app.listen(port, () => {
 //getCustomers
 app.get("/customers", async (req, res) => {
     const cust = await da.getCustomers();
-    res.send(cust);
+    if(cust){
+        res.send(cust);
+    }else{
+        res.status(500);
+        res.send(err);
+    }   
     });
