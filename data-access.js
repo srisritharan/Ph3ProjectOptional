@@ -120,4 +120,23 @@ module.exports.updateCustomer = async function (updatedCustomer) {
     }
 };
 
+//deleteCustomerById
+module.exports.deleteCustomerById = async function (id) {
+    try {
+        const deleteCustomer = await collection.deleteOne({ "id": +id });
+        console.log(new Date().toLocaleString() + " deleteCustomerById");
+        if (deleteCustomer.deletedCount === 0) {
+            return [null, "Invalid Customer Number. No record deleted :-("];
+        } else if (deleteCustomer.deletedCount === 1) {
+            return ["One record deleted at " + new Date().toLocaleString(), null];
+        } else {
+            return [null, "Error deleting records"]
+        }
+    } catch (err) {
+        console.log(err.message);
+        return [null, err.message];
+    }
+};
+
+
 dbConnect();
