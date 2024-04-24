@@ -70,3 +70,21 @@ app.get("/customers/:id", async (req, res) => {
         res.status(404).send(err);
     }
 });
+
+//updatedCustomer
+app.put('/customers/:id', async (req, res) => {
+    const id = req.params.id;
+    const updatedCustomer = req.body;
+    // Check if the request body is missing
+    if (Object.keys(updatedCustomer).length === 0) {
+        res.status(400).send("Missing request body");
+    } else {
+        delete updatedCustomer._id;
+        const [message, err] = await da.updateCustomer(updatedCustomer);
+        if (message) {
+            res.send(message);
+        } else {
+            res.status(400).send(err);
+        }
+    }
+});

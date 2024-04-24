@@ -62,12 +62,12 @@ module.exports.resetCustomers = async function () {
     try {
         await collection.deleteMany({});
         await collection.insertMany(cusData);
-        const customers = await collection.find().toArray();
+        const customers = await collection.countDocuments();
         const msg =
             "New data loaded at " +
             new Date().toLocaleString() +
             " <br/> There are now " +
-            customers.length +
+            customers +
             " customer records!";
         console.log(new Date().toLocaleString() + " resetCustomers");
         return [msg, null];
@@ -99,6 +99,21 @@ module.exports.getCustomerById = async function (id) {
             return [null, "Invalid Customer Number </br> Customer not found (404)!"];
         }
         return [customer, null];
+    } catch (err) {
+        console.log(err.message);
+        return [null, err.message];
+    }
+};
+
+// updateCustomer
+module.exports.updateCustomer = async function (updatedCustomer) {
+    try {
+        const filter = { "id": updatedCustomer.id };
+        const setData = { $set: updatedCustomer };
+        const updateResult = await collection.updateOne(filter, setData);
+        console.log(new Date().toLocaleString() + " updateCustomer");
+        const msg = "One record updated at " + new Date().toLocaleString();
+        return [msg, null];
     } catch (err) {
         console.log(err.message);
         return [null, err.message];
