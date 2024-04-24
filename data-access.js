@@ -21,6 +21,7 @@ async function dbConnect() {
     }
 }
 
+// get Customers
 module.exports.getCustomers = async function() {
     try {
         const customers = await collection.find().toArray();
@@ -33,4 +34,21 @@ module.exports.getCustomers = async function() {
     }
   };
 
+// reset Customers
+module.exports.resetCustomers =async function() {
+    let cusData = [{ "id": 0, "name": "Mary Jackson", "email": "maryj@abc.com", "password": "maryj" },
+    { "id": 1, "name": "Karen Addams", "email": "karena@abc.com", "password": "karena" },
+    { "id": 2, "name": "Scott Ramsey", "email": "scottr@abc.com", "password": "scottr" }];
+    try {
+        await collection.deleteMany({});
+        await collection.insertMany(cusData);
+        const customers = await collection.find().toArray();
+        const msg = "New data loaded at " + new Date().toLocaleString() + " There are now " + customers.length + " customer records!"
+        console.log(new Date().toLocaleString() + " resetCustomers");
+        return [msg, null];
+    } catch (err) {
+        console.log(err.message);
+        return [null, err.message];
+    }
+  };
 dbConnect();
