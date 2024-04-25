@@ -3,6 +3,7 @@ const path = require("path"); //imports path
 const da = require("./data-access"); //imports data-access.js
 const bodyParser = require("body-parser"); //import body-parser
 require('dotenv').config() // load in the environment vars
+const { auth } = require("./utils/auth"); // import the auth
 
 const app = express(); //creates an express app object
 const port = process.env.PORT || 4000; // use env var or default to 4000
@@ -19,31 +20,7 @@ app.listen(port, () => {
     console.log("staticDir: " + staticDir);
 });
 
-//Authorize using API_Key
-function auth(req, res, next) {
-    
-    console.log(new Date().toLocaleString() + " Query Parameter APIkey:"+ req.query.qApiKey, "Header x-api-key:" + req.header("x-api-key"), "env API_Key:" + process.env.API_KEY);
-    // Access the provided 'qApiKey' query parameters
-    let apiKey = null;
-    if (req.query.qApiKey) {
-        apiKey = req.query.qApiKey;
-    } else {
-        // Access the provided 'x-api-key' from header
-        apiKey = req.header("x-api-key");
-    }
-    // error if not x-api-key header & if not right key
-    if (!apiKey) {
-        res.status(401).json({ message: "Missing API key" })
-        return;
-    } else {
-        if (apiKey !== process.env.API_KEY) {
-            res.status(403).json({ message: "Invalid API key" })
-            return;
-        }
-    }
-    next()
-}
-  
+
 //getCustomers
 app.get("/customers",auth, async (req, res) => {
     const [cust, err] = await da.getCustomers();
