@@ -2,7 +2,10 @@ const express = require("express"); //imports express
 const path = require("path"); //imports path
 const da = require("./data-access"); //imports data-access.js
 const bodyParser = require("body-parser"); //import body-parser
-require('dotenv').config() // load in the environment vars
+// load in the environment vars
+const dotenv = require('dotenv');
+dotenv.config();
+
 const a = require("./utils/auth"); // import the auth
 
 const app = express(); //creates an express app object
@@ -116,3 +119,5 @@ app.get("/apikey", async (req, res) => {
         res.status(400).send("<h1>An email query param is required </h1> </br> URL with query parameter would look like this: http://localhost:4000/apikey?email=jack@abc.com");
     }   
 });
+
+//Search Endpoint
