@@ -3,7 +3,7 @@ const path = require("path"); //imports path
 const da = require("./data-access"); //imports data-access.js
 const bodyParser = require("body-parser"); //import body-parser
 require('dotenv').config() // load in the environment vars
-const { auth } = require("./utils/auth"); // import the auth
+const a = require("./utils/auth"); // import the auth
 
 const app = express(); //creates an express app object
 const port = process.env.PORT || 4000; // use env var or default to 4000
@@ -22,7 +22,7 @@ app.listen(port, () => {
 
 
 //getCustomers
-app.get("/customers",auth, async (req, res) => {
+app.get("/customers",a.auth, async (req, res) => {
     const [cust, err] = await da.getCustomers();
     if (cust) {
         res.send(cust);

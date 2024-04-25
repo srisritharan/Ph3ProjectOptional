@@ -22,7 +22,7 @@ async function dbConnect() {
         console.log(err.message);
         console.log("DB CONNECTION FAILED. Is database running?");
     }
-}
+};
 
 // get Customers
 module.exports.getCustomers = async function () {
