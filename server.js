@@ -37,7 +37,7 @@ function auth(req, res, next) {
         return;
     } else {
         if (apiKey !== process.env.API_KEY) {
-            res.status(401).json({ message: "Invalid API key" })
+            res.status(403).json({ message: "Invalid API key" })
             return;
         }
     }
