@@ -1,5 +1,24 @@
-//validate APIKEY
+var crypto = require('crypto');
+
 let apiKey = null;
+let apiKeys = new Map();
+
+module.exports.getEmailApiKey = function (email) {
+    let randomApiKey = crypto.randomBytes(16).toString('hex');
+    apiKeys.set(email, randomApiKey);
+    displayMapApiKeys();
+    return [email,randomApiKey];
+};
+
+//Referance for map and loop https://www.w3schools.com/js/js_object_maps.asp
+displayMapApiKeys = function () {
+    console.log(new Date().toLocaleString() + " Map ApiKeys:")
+    for (const x of apiKeys.entries()) {
+        console.log(x);
+    }
+}
+
+//validate APIKEY is present
 validateApiKey = function() {
     apiKey = process.env.API_KEY;
         console.log(new Date().toLocaleString() + " process.env API Key     :" + apiKey);
@@ -9,6 +28,8 @@ validateApiKey = function() {
     }
     if (apiKey && apiKey.length >0)
     {
+        apiKeys.set("default", apiKey);
+        displayMapApiKeys();
         console.log(new Date().toLocaleString() + " API Key for this App    :" + apiKey);
     }else{
         console.log(new Date().toLocaleString() + " Error!!! No APIKey in .Env file or form command line");
@@ -39,11 +60,19 @@ module.exports.auth = function (req, res, next) {
     if (!apiKey) {
         res.status(401).json({ message: "Missing API key" })
         return;
-    } else {
-        if (inputApiKey !== apiKey) {
-            res.status(403).json({ message: "Invalid API key" })
-            return;
+    }
+    //loop through the apikeys map and see if it's a valid key
+
+    let validated = false;
+    for( let key of apiKeys.values()){
+        if (inputApiKey === key){
+            validated = true;
         }
+      }
+    //if we dont have a key throw an error
+    if (!validated) {
+        res.status(403).json({ message: "Invalid API key" })
+        return;
     }
     next();
 };

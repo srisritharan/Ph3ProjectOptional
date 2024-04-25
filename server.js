@@ -104,3 +104,15 @@ app.delete("/customers/:id", async (req, res) => {
         res.status(404).send(err);
     }
 });
+
+//api-keys to be assigned to individual users
+app.get("/apikey", async (req, res) => {
+    let email = req.query.email;
+    console.log(new Date().toLocaleString() + " Entered email:" + email);
+    if(email){
+        const emailApiKey = a.getEmailApiKey(email);
+        res.send(emailApiKey);
+    }else{
+        res.status(400).send("<h1>An email query param is required </h1> </br> URL with query parameter would look like this: http://localhost:4000/apikey?email=jack@abc.com");
+    }   
+});
