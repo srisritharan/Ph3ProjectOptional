@@ -4,7 +4,7 @@ The application allows users to use HTTP requests to create, read, update and de
 
 **To start and pass APIKey**
 
-    npm start test-apikey
+    npm start API_key=test-apikey
 
 **Create a .env file with**
 

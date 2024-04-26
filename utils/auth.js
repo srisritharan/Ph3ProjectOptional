@@ -19,19 +19,14 @@ displayMapApiKeys = function () {
 }
 
 //validate APIKEY is present
-validateApiKey = function() {
-    apiKey = process.env.API_KEY;
-        console.log(new Date().toLocaleString() + " process.env API Key     :" + apiKey);
-    if (process.argv[2] != null)    {
-        apiKey = process.argv[2];
-        console.log(new Date().toLocaleString() + " process.argv[2] API Key :" + apiKey);
-    }
-    if (apiKey && apiKey.length >0)
-    {
+validateApiKey = function () {
+    apiKey = process.argv[2] ? process.argv[2].split('=')[1] : process.env.API_KEY;
+    console.log(new Date().toLocaleString() + " envVarValue API Key     :" + apiKey);
+    if (apiKey && apiKey.length > 0) {
         apiKeys.set("default", apiKey);
         displayMapApiKeys();
         console.log(new Date().toLocaleString() + " API Key for this App    :" + apiKey);
-    }else{
+    } else {
         console.log(new Date().toLocaleString() + " Error!!! No APIKey in .Env file or form command line");
         return process.exit(0);
     }
