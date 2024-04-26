@@ -71,7 +71,7 @@ module.exports.auth = function (req, res, next) {
       }
     //if we dont have a key throw an error
     if (!validated) {
-        res.status(403).json({ message: "Invalid API key" })
+        res.status(403).json({ message: "Invalid API key, include qApiKey like  http://localhost:4001/customers?qApiKey=e070b6c7-da57-465d-845e-e3dc103e86ac or in  Header x-api-key "})
         return;
     }
     next();

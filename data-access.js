@@ -138,5 +138,17 @@ module.exports.deleteCustomerById = async function (id) {
     }
 };
 
+module.exports.findCustomer = async function (filterObject) {
+    try {
+        const customer = await collection.find(filterObject).toArray();
+        if(!customer || customer.length == 0 ){
+          return [ null, "<h1> No matching customer documents found </h1>"];
+        }
+        return [customer, null];
+    } catch (err) {
+        console.log(err.message);
+        return [null, err.message];
+    }
+};
 
 dbConnect();

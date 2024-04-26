@@ -121,3 +121,27 @@ app.get("/apikey", async (req, res) => {
 });
 
 //Search Endpoint
+app.get("/customer/find", async (req, res) => {
+    let id = +req.query.id;
+    let email = req.query.email;
+    let password = req.query.password;
+    let srchFor = null;
+    if (id > -1) {
+        srchFor = { "id": id };
+    } else if (email) {
+        srchFor = { "email": email };
+    } else if (password) {
+        srchFor = { "password": password }
+    }
+    if (srchFor) {
+        const [customers, err] = await da.findCustomer(srchFor);
+        if (customers) {
+            res.send(customers);
+        } else {
+            res.status(404);
+            res.send(err);
+        }
+    } else {
+        res.status(400).send("<h1>Bad request</h1> </br> Name/value pair must match one of the customer document's properties (id, email, password)");
+    }
+});
