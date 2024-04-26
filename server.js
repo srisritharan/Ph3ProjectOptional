@@ -35,7 +35,7 @@ app.get("/customers",a.auth, async (req, res) => {
 });
 
 // reset Customers
-app.get("/reset", async (req, res) => {
+app.get("/reset",a.auth, async (req, res) => {
     const [result, err] = await da.resetCustomers();
     if (result) {
         res.send(result);
@@ -45,7 +45,7 @@ app.get("/reset", async (req, res) => {
 });
 
 // adding a new customer
-app.post("/customers", async (req, res) => {
+app.post("/customers",a.auth, async (req, res) => {
     const newCustomer = req.body;
     // Check if the request body is missing
     if (Object.keys(req.body).length === 0) {
@@ -67,7 +67,7 @@ app.post("/customers", async (req, res) => {
 });
 
 //getCustomerByID
-app.get("/customers/:id", async (req, res) => {
+app.get("/customers/:id",a.auth, async (req, res) => {
     const id = req.params.id;
     const [cust, err] = await da.getCustomerById(id);
     if (cust) {
@@ -78,7 +78,7 @@ app.get("/customers/:id", async (req, res) => {
 });
 
 //updatedCustomer
-app.put('/customers/:id', async (req, res) => {
+app.put('/customers/:id',a.auth, async (req, res) => {
     const id = req.params.id;
     const updatedCustomer = req.body;
     // Check if the request body is missing
@@ -97,7 +97,7 @@ app.put('/customers/:id', async (req, res) => {
 
 
 //deleteCustomerById
-app.delete("/customers/:id", async (req, res) => {
+app.delete("/customers/:id",a.auth, async (req, res) => {
     const id = req.params.id;
     // return array [message, errMessage]
     const [msg, err] = await da.deleteCustomerById(id);
@@ -121,7 +121,7 @@ app.get("/apikey", async (req, res) => {
 });
 
 //Search Endpoint
-app.get("/customer/find", async (req, res) => {
+app.get("/customer/find",a.auth, async (req, res) => {
     let id = +req.query.id;
     let email = req.query.email;
     let password = req.query.password;
