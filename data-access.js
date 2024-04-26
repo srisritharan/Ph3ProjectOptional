@@ -80,6 +80,12 @@ module.exports.resetCustomers = async function () {
 // add Customer
 module.exports.addCustomer = async function (newCustomer) {
     try {
+        //chk if Id or email already exists
+        const idExists = await collection.findOne({ "id": newCustomer.id });
+        const emailExists = await collection.findOne({ "email": newCustomer.email });
+        if (idExists || emailExists ){
+            return ["fail", null, "User Id or email already exist"];
+        }
         const insertResult = await collection.insertOne(newCustomer);
         // return array [status, id, errMessage]
         console.log(new Date().toLocaleString() + " addCustomer");
